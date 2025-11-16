@@ -6,11 +6,6 @@ export default function Hero() {
   return (
     <section className="min-h-screen flex items-center justify-center pt-20 px-4">
       <div className="max-w-4xl mx-auto text-center">
-        <div className="mb-6 inline-block">
-          <div className="px-4 py-2 bg-secondary rounded-full text-sm font-medium text-secondary-foreground">
-            ✨ Welcome to my portfolio
-          </div>
-        </div>
 
         <h1 className="text-5xl md:text-7xl font-bold text-balance mb-6 leading-tight">
           Hi, I'm <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">Akhilesh Patil</span>

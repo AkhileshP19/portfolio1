@@ -66,13 +66,13 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-border pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col md:flex-row justify-center items-center gap-4">
             <p className="text-sm text-muted-foreground">
               © {currentYear} Akhilesh Patil. All rights reserved.
             </p>
-            <p className="text-xs text-muted-foreground">
+            {/* <p className="text-xs text-muted-foreground">
               Crafted with ✨ using Next.js, React & Tailwind CSS
-            </p>
+            </p> */}
           </div>
         </div>
       </div>

@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+* {
+  transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+}
+
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -8,6 +13,23 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  --color-card: color-mix(in srgb, var(--background) 92%, var(--foreground));
+  --color-card-foreground: var(--foreground);
+
+  --color-secondary: color-mix(in srgb, var(--background) 85%, var(--foreground));
+  --color-secondary-foreground: var(--foreground);
+
+  --color-muted: color-mix(in srgb, var(--foreground) 30%, var(--background));
+  --color-muted-foreground: color-mix(in srgb, var(--foreground) 55%, var(--background));
+
+  --color-accent: #8b5cf6;
+  --color-primary: #3b82f6;
+  --color-primary-foreground: #ffffff;
+
+  --color-border: color-mix(in srgb, var(--foreground) 20%, var(--background));
+  --color-input: color-mix(in srgb, var(--foreground) 20%, var(--background));
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
