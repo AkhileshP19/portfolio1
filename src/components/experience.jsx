@@ -19,7 +19,7 @@ export default function Experience() {
 
   return (
     <section id="experience" className="py-20 px-4">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <div className="mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">Experience</h2>
           <div className="h-1 w-20 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"></div>
@@ -60,22 +60,50 @@ export default function Experience() {
         {/* Certifications */}
         <div className="mt-16">
           <h3 className="text-2xl font-bold mb-8 text-foreground">Certifications</h3>
+
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              'Introduction to Frontend Development (Coursera)',
-              'Programming in JavaScript (Coursera)',
-              'Version Control (Coursera)',
-              'HTML & CSS in Depth (Coursera)',
-              'React Basics (Coursera)',
-              'Advanced React (Coursera)',
+              {
+                name: "Introduction to Frontend Development (Coursera)",
+                url: "https://www.coursera.org/account/accomplishments/verify/JH34WD367MXN",
+              },
+              {
+                name: "Programming with JavaScript (Coursera)",
+                url: "https://www.coursera.org/account/accomplishments/verify/6LA9ZSVVK92C",
+              },
+              {
+                name: "Version Control (Coursera)",
+                url: "https://www.coursera.org/account/accomplishments/verify/U37HDF6BNH3U",
+              },
+              {
+                name: "HTML & CSS in Depth (Coursera)",
+                url: "https://www.coursera.org/account/accomplishments/verify/ZJKYCL5ES68A",
+              },
+              {
+                name: "React Basics (Coursera)",
+                url: "https://www.coursera.org/account/accomplishments/verify/PBN8GHVYWABX",
+              },
+              {
+                name: "Advanced React (Coursera)",
+                url: "https://www.coursera.org/account/accomplishments/verify/MUMEHGF8QWZQ",
+              },
             ].map((cert, i) => (
-              <div key={i} className="flex items-center gap-3 p-4 bg-secondary/50 rounded-lg border border-border">
+              <a
+                key={i}
+                href={cert.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 p-4 bg-secondary/50 rounded-lg border border-border hover:border-primary/50 transition-all"
+              >
                 <span className="text-primary font-bold">✓</span>
-                <span className="text-foreground">{cert}</span>
-              </div>
+                <span className="text-foreground hover:text-primary transition-colors">
+                  {cert.name}
+                </span>
+              </a>
             ))}
           </div>
         </div>
+
       </div>
     </section>
   );

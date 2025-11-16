@@ -39,11 +39,12 @@ export default function Projects() {
           {projects.map((project, index) => (
             <div
               key={index}
-              className="group bg-card rounded-lg overflow-hidden border border-border hover:border-primary transition-all duration-300 hover:shadow-xl hover:shadow-primary/20"
+              className="group bg-card rounded-lg overflow-hidden border border-border hover:border-primary transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 flex flex-col h-full"
             >
-              <div className={`h-40 bg-gradient-to-br ${project.gradient} opacity-80 group-hover:opacity-100 transition-opacity duration-300`}></div>
+              <div className={`h-44 bg-gradient-to-br ${project.gradient} opacity-80 group-hover:opacity-100 transition-opacity duration-300`}></div>
 
-              <div className="p-6">
+            <div className="p-6 flex flex-col h-full">
+              <div className="flex-1">
                 <h3 className="text-2xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">
                   {project.title}
                 </h3>
@@ -52,7 +53,7 @@ export default function Projects() {
                   {project.description}
                 </p>
 
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex flex-wrap gap-2 -mb-4">
                   {project.tech.map((tech) => (
                     <span
                       key={tech}
@@ -62,16 +63,18 @@ export default function Projects() {
                     </span>
                   ))}
                 </div>
-
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-semibold hover:opacity-90 transition-all duration-300 w-full justify-center"
-                >
-                  View Project <ExternalLink size={18} />
-                </a>
               </div>
+
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-semibold hover:opacity-90 transition-all duration-300 w-full justify-center"
+              >
+                View Project <ExternalLink size={18} />
+              </a>
+            </div>
+
             </div>
           ))}
         </div>

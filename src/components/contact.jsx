@@ -1,8 +1,47 @@
 'use client';
 
-import { Mail, Linkedin, Github, ArrowRight } from 'lucide-react';
+import { useState } from 'react';
+import { Mail, Linkedin, Github, ArrowRight, Loader2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function Contact() {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData(e.target);
+    formData.append("access_key", "523a088a-7b02-4001-b0b2-2fe1a6e5aabd");
+
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: json,
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        toast.success("Message sent successfully! 🎉");
+        e.target.reset();
+      } else {
+        toast.error(data.message || "Failed to send message.");
+      }
+    } catch (err) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section id="contact" className="py-20 px-4 bg-secondary/30">
       <div className="max-w-4xl mx-auto">
@@ -59,16 +98,12 @@ export default function Contact() {
           </a>
         </div>
 
-        {/* WORKING CONTACT FORM */}
+        {/* Custom Contact Form */}
         <form
           id="contact-form"
-          action="https://api.web3forms.com/submit"
-          method="POST"
+          onSubmit={handleSubmit}
           className="bg-card rounded-lg p-8 border border-border mt-16 shadow-md"
         >
-          <input type="hidden" name="access_key" value="523a088a-7b02-4001-b0b2-2fe1a6e5aabd" />
-          <input type="hidden" name="redirect" value="https://web3forms.com/success" />
-
           <h3 className="text-3xl font-bold mb-6 text-center">Send Me a Message</h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -107,9 +142,19 @@ export default function Contact() {
 
           <button
             type="submit"
-            className="mt-6 w-full px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:opacity-90 transition-all"
+            disabled={loading}
+            className={`mt-6 w-full px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold border border-border transition-all cursor-pointer flex items-center justify-center gap-2 ${
+              loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"
+            }`}
           >
-            Send Message
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin" size={20} />
+                Sending...
+              </>
+            ) : (
+              "Send Message"
+            )}
           </button>
         </form>
 
