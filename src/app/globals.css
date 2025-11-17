@@ -1,10 +1,5 @@
 @import "tailwindcss";
 
-* {
-  transition: background-color .25s ease, color .25s ease, border-color .25s ease;
-}
-
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -34,8 +29,21 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Base theme (light as default) */
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+/* When next-themes sets <html class="dark"> */
+html.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+/* Optional: If system theme is dark AND user has not chosen manually */
 @media (prefers-color-scheme: dark) {
-  :root {
+  html:not(.light):not(.dark) {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
@@ -44,5 +52,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
 }
