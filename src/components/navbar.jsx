@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
+import ThemeSwitch from './theme-switch';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,13 +19,20 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 w-full bg-background/80 backdrop-blur-md z-50 border-b border-border">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Top Row */}
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+
+          {/* Logo */}
+          <Link 
+            href="/" 
+            className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
+          >
             AP
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex gap-8">
+          <div className="hidden md:flex gap-8 items-center">
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -34,6 +42,9 @@ export default function Navbar() {
                 {link.name}
               </a>
             ))}
+
+            {/* Theme Switch (Desktop) */}
+            <ThemeSwitch />
           </div>
 
           {/* Mobile Menu Button */}
@@ -58,6 +69,11 @@ export default function Navbar() {
                 {link.name}
               </a>
             ))}
+
+            {/* Theme Switch (Mobile) */}
+            <div className="px-4 pt-2">
+              <ThemeSwitch />
+            </div>
           </div>
         )}
       </div>
