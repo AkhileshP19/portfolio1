@@ -12,7 +12,7 @@ export default function Hero() {
         </h1>
 
         <p className="text-xl md:text-2xl text-muted-foreground text-balance mb-8 leading-relaxed">
-          Full Stack Developer crafting modern, scalable web applications with Next.js, React, and beautiful UIs
+          Software Developer focused on architecting scalable, modular web applications using <span className="text-foreground font-medium">Next.js, React & Tailwind CSS</span>.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
