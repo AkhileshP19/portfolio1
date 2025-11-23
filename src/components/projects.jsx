@@ -29,7 +29,7 @@ export default function Projects() {
 
   return (
     <section id="projects" className="py-20 px-4 bg-secondary/30">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <div className="mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">Featured Projects</h2>
           <div className="h-1 w-20 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"></div>
