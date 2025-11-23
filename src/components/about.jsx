@@ -1,6 +1,34 @@
 'use client';
+import { Sparkles, Zap, TrendingUp, Users } from 'lucide-react';
 
 export default function About() {
+  const valueProps = [
+    {
+      icon: Sparkles,
+      title: 'Design-First Mindset',
+      description: 'Where clean code meets beautiful UI',
+      gradient: 'from-blue-400 to-cyan-400',
+    },
+    {
+      icon: Zap,
+      title: 'Performance Focused',
+      description: 'Optimized SPAs with modern React patterns',
+      gradient: 'from-purple-400 to-pink-400',
+    },
+    {
+      icon: TrendingUp,
+      title: 'Rapid Learner',
+      description: '6 certifications in 8 months',
+      gradient: 'from-green-400 to-emerald-400',
+    },
+    {
+      icon: Users,
+      title: 'Collaborative',
+      description: 'Cross-functional teamwork at tCognition',
+      gradient: 'from-orange-400 to-red-400',
+    },
+  ];
+
   return (
     <section id="about" className="py-20 px-4 bg-secondary/30">
       <div className="max-w-5xl mx-auto">
@@ -23,26 +51,26 @@ export default function About() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg p-8 border border-border">
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-sm font-semibold text-muted-foreground mb-2">Location</h3>
-                <p className="text-lg font-medium">Kolhapur, India</p>
-              </div>
-
-              <div>
-                <h3 className="text-sm font-semibold text-muted-foreground mb-2">Education</h3>
-                <p className="text-lg font-medium">B.Tech in CS & IT</p>
-                <p className="text-sm text-muted-foreground">Rajarambapu Institute of Technology</p>
-                <p className="text-sm text-muted-foreground">CGPA: 8.20</p>
-              </div>
-
-              <div>
-                <h3 className="text-sm font-semibold text-muted-foreground mb-2">Experience</h3>
-                <p className="text-lg font-medium">Current Role</p>
-                <p className="text-sm text-muted-foreground">Software Developer Intern at tCognition</p>
-              </div>
-            </div>
+          {/* What I Bring - Value Props */}
+          <div className="space-y-4">
+            <h3 className="text-2xl font-bold mb-6">What I Bring</h3>
+            {valueProps.map((prop, index) => {
+              const Icon = prop.icon;
+              return (
+                <div
+                  key={index}
+                  className="flex items-start gap-4 p-4 rounded-lg bg-gradient-to-r from-secondary/50 to-transparent border border-border/50 hover:border-primary/50 transition-all duration-300 hover:translate-x-2"
+                >
+                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${prop.gradient} flex items-center justify-center flex-shrink-0`}>
+                    <Icon className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-lg mb-1">{prop.title}</h4>
+                    <p className="text-sm text-muted-foreground">{prop.description}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
