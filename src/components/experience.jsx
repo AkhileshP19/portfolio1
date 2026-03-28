@@ -3,7 +3,7 @@
 export default function Experience() {
   const experiences = [
     {
-      role: 'Software Developer Intern',
+      role: 'Software Engineer',
       company: 'tCognition',
       period: 'Feb 2025 – Present',
       location: 'Kolhapur',

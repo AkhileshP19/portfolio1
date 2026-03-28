@@ -1,26 +1,56 @@
 'use client';
 
-import { ExternalLink, Github, Code2 } from 'lucide-react';
+import { ExternalLink, Github } from 'lucide-react';
 
 export default function Projects() {
   const projects = [
     {
+      title: 'XseedAI – Enterprise AI ATS',
+      description:
+        'Enterprise-grade AI-powered Applicant Tracking System for managing end-to-end recruitment workflows, including job creation, candidate pipelines, and AI-driven assessments.',
+      tech: [
+        'React.js',
+        'Next.js',
+        'TypeScript',
+        'Tailwind CSS',
+        'TanStack Query',
+        'Zod',
+        'Node.js',
+        'Express.js',
+        'MongoDB',
+        'MySQL',
+      ],
+      link: 'https://xseed.ai', // 🔁 replace with actual link
+      github: null,
+    },
+    {
       title: 'Doctor Appointment System',
-      description: 'Full-stack appointment system with real-time video consultation, authentication, and modern responsive UI',
-      tech: ['Next.js', 'Tailwind CSS', 'MongoDB', 'Clerk', 'Prisma', 'Neon', 'Vonage'],
+      description:
+        'Full-stack appointment system with real-time video consultation, authentication, and modern responsive UI',
+      tech: [
+        'Next.js',
+        'Tailwind CSS',
+        'MongoDB',
+        'Clerk',
+        'Prisma',
+        'Neon',
+        'Vonage',
+      ],
       link: 'https://docy-talks.vercel.app/',
       github: 'https://github.com/akhileshp19/next-doc-appointment',
     },
     {
       title: 'Satej Sports Club App',
-      description: 'Dynamic sports app displaying live matches, points tables, and championship history with mobile-first design',
+      description:
+        'Dynamic sports app displaying live matches, points tables, and championship history with mobile-first design',
       tech: ['Next.js', 'Tailwind CSS', 'shadcn/ui', 'Dynamic Routing'],
       link: 'https://satej-sports-club.vercel.app/',
       github: 'https://github.com/akhileshp19/sports-management-frontend',
     },
     {
       title: 'Quizzy Quest',
-      description: 'Interactive quiz platform with category selection, difficulty levels, timer, and real-time scoring',
+      description:
+        'Interactive quiz platform with category selection, difficulty levels, timer, and real-time scoring',
       tech: ['HTML', 'CSS', 'JavaScript', 'Local Storage', 'API Integration'],
       link: 'https://quizyquest.netlify.app/',
       github: 'https://github.com/akhileshp19/quizzy-quest',
@@ -31,7 +61,9 @@ export default function Projects() {
     <section id="projects" className="py-20 px-4 bg-secondary/30">
       <div className="max-w-5xl mx-auto">
         <div className="mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">Featured Projects</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            Featured Projects
+          </h2>
           <div className="h-1 w-20 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"></div>
         </div>
 
@@ -41,7 +73,7 @@ export default function Projects() {
               key={index}
               className="group bg-card rounded-xl overflow-hidden border border-border hover:border-primary transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10 flex flex-col h-full"
             >
-              {/* LIVE PREVIEW SECTION (Desktop Simulation) */}
+              {/* LIVE PREVIEW */}
               <div className="relative h-60 w-full bg-muted overflow-hidden border-b border-border/50">
                 <iframe
                   src={project.link}
@@ -64,7 +96,6 @@ export default function Projects() {
                     {project.description}
                   </p>
 
-                  {/* Skills Section - Showing ALL tags now */}
                   <div className="flex flex-wrap gap-2 mb-6">
                     {project.tech.map((tech) => (
                       <span
@@ -77,17 +108,23 @@ export default function Projects() {
                   </div>
                 </div>
 
-                {/* Buttons Action Area */}
-                <div className="grid grid-cols-2 gap-3 mt-auto pt-4 border-t border-border/50">
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-lg text-sm font-semibold transition-colors duration-300"
-                  >
-                    <Github size={16} /> Code
-                  </a>
-                  
+                {/* ACTION BUTTONS */}
+                <div
+                  className={`grid ${
+                    project.github ? 'grid-cols-2' : 'grid-cols-1'
+                  } gap-3 mt-auto pt-4 border-t border-border/50`}
+                >
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-lg text-sm font-semibold transition-colors duration-300"
+                    >
+                      <Github size={16} /> Code
+                    </a>
+                  )}
+
                   <a
                     href={project.link}
                     target="_blank"

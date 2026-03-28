@@ -40,8 +40,8 @@ export default function About() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <p className="text-lg text-muted-foreground leading-relaxed">
-              I'm a highly motivated Software Developer with hands-on experience in building modern, scalable, and user-centric web applications. Currently working as an Intern at 
-              <span className="text-foreground font-semibold"> tCognition</span>, contributing to XseedAI, an AI-powered Applicant Tracking System.
+              I'm a highly motivated Software Engineer with hands-on experience building modern, scalable, and user-centric web applications. Currently, I work at
+              <span className="text-foreground font-semibold"> tCognition</span>, where I contribute to XseedAI, an AI-powered Applicant Tracking System.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
               I specialize in front-end architecture and feature modules, focusing on reusable, responsive, and accessible components. My passion lies where clean code meets beautiful UI.
