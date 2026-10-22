@@ -9,12 +9,9 @@ import Footer from "@/components/layout/Footer";
 import { profile, socialLinks } from "@/data/portfolio";
 import "./globals.css";
 import "./enhancements.css";
+import { cn } from "@/lib/utils";
 
-const sans = Geist({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 const mono = Geist_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
@@ -91,8 +88,12 @@ export default function RootLayout({
     path.join(process.cwd(), "public", "Akhilesh-Patil-Resume.pdf"),
   );
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${sans.variable} ${mono.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={cn("font-sans", geist.variable)}
+    >
+      <body className={`${geist.variable} ${mono.variable}`}>
         <Providers>
           <a className="skip-link" href="#main-content">
             Skip to content

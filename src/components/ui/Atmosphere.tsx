@@ -2,6 +2,25 @@
 import { useEffect, useRef, useSyncExternalStore } from "react";
 import { CloudSun, CloudRain, Snowflake, Sun, X } from "lucide-react";
 import { useTheme } from "next-themes";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 type Settings = {
   weather: "none" | "summer" | "snow" | "rain";
@@ -62,52 +81,54 @@ function save(settings: Settings) {
 export function resetDaylight() {
   save({ ...parse(snapshot()), daylight: "manual" });
 }
-function useSettings() {
+export function useAtmosphereSettings() {
   return parse(useSyncExternalStore(subscribe, snapshot, () => fallback));
 }
 
+const daylightOptions = [
+  { value: "manual", label: "Use my light / dark setting" },
+  { value: "morning", label: "Morning" },
+  { value: "afternoon", label: "Afternoon" },
+  { value: "evening", label: "Evening" },
+  { value: "night", label: "Night" },
+] as const;
+
 export function AtmosphereControl() {
-  const dialog = useRef<HTMLDialogElement>(null);
-  const settings = useSettings();
+  const settings = useAtmosphereSettings();
   const { setTheme } = useTheme();
   return (
-    <>
-      <button
-        className="icon-button"
+    <Dialog>
+      <DialogTrigger
+        render={<Button variant="ghost" size="icon" className="icon-button" />}
         aria-label="Atmosphere settings"
         title="Atmosphere settings"
-        onClick={() => dialog.current?.showModal()}
       >
         <CloudSun size={19} aria-hidden="true" />
-      </button>
-      <dialog
-        ref={dialog}
+      </DialogTrigger>
+      <DialogContent
         className="atmosphere-dialog"
-        aria-labelledby="atmosphere-title"
-        onKeyDown={(event) => {
-          if (event.key === "Escape") event.stopPropagation();
-        }}
-        onClick={(event) => {
-          if (event.target === event.currentTarget) dialog.current?.close();
-        }}
+        showCloseButton={false}
+        onKeyDown={(event) => event.stopPropagation()}
+        onBlur={(event) => event.stopPropagation()}
       >
         <div className="dialog-content">
-          <div className="dialog-heading">
+          <DialogHeader className="dialog-heading">
             <div>
               <p className="eyebrow">Make yourself at home</p>
-              <h2 id="atmosphere-title">A little atmosphere.</h2>
+              <DialogTitle>A little atmosphere.</DialogTitle>
             </div>
-            <button
-              className="icon-button"
+            <DialogClose
+              render={
+                <Button variant="ghost" size="icon" className="icon-button" />
+              }
               aria-label="Close atmosphere settings"
-              onClick={() => dialog.current?.close()}
             >
               <X size={22} aria-hidden="true" />
-            </button>
-          </div>
-          <p className="settings-intro">
+            </DialogClose>
+          </DialogHeader>
+          <DialogDescription className="settings-intro">
             An optional change of season, or a different time of day.
-          </p>
+          </DialogDescription>
           <fieldset>
             <legend>Season & weather</legend>
             <div className="weather-options">
@@ -119,66 +140,80 @@ export function AtmosphereControl() {
                   { value: "rain", label: "Rain", icon: CloudRain },
                 ] as const
               ).map((option) => (
-                <button
+                <Button
+                  variant="outline"
                   key={option.value}
                   aria-pressed={settings.weather === option.value}
                   onClick={() => save({ ...settings, weather: option.value })}
                 >
                   <option.icon size={19} aria-hidden="true" />
                   {option.label}
-                </button>
+                </Button>
               ))}
             </div>
           </fieldset>
-          <label className="intensity-label" htmlFor="weather-intensity">
+          <Label id="intensity-label" className="intensity-label">
             Intensity <output>{settings.intensity}%</output>
-          </label>
-          <input
-            id="weather-intensity"
-            type="range"
-            min="0"
-            max="100"
-            step="5"
-            value={settings.intensity}
+          </Label>
+          <Slider
+            className="weather-slider"
+            thumbLabel="Intensity"
+            min={0}
+            max={100}
+            step={5}
+            value={[settings.intensity]}
             disabled={settings.weather === "none"}
-            onChange={(event) =>
-              save({ ...settings, intensity: Number(event.target.value) })
+            onValueChange={(value) =>
+              save({
+                ...settings,
+                intensity: Array.isArray(value) ? value[0] : (value as number),
+              })
             }
           />
-          <label className="daylight-label" htmlFor="daylight">
+          <Label className="daylight-label" htmlFor="daylight">
             Time of day
-          </label>
-          <select
-            id="daylight"
+          </Label>
+          <Select
+            items={daylightOptions}
             value={settings.daylight}
-            onChange={(event) => {
-              const daylight = event.target.value as Settings["daylight"];
+            onValueChange={(value) => {
+              if (!value) return;
+              const daylight = value as Settings["daylight"];
               save({ ...settings, daylight });
               if (daylight !== "manual")
                 setTheme(daylight === "night" ? "dark" : "light");
             }}
           >
-            <option value="manual">Use my light / dark setting</option>
-            <option value="morning">Morning</option>
-            <option value="afternoon">Afternoon</option>
-            <option value="evening">Evening</option>
-            <option value="night">Night</option>
-          </select>
+            <SelectTrigger id="daylight" className="daylight-select">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent alignItemWithTrigger={false}>
+              {daylightOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <p className="settings-note">
             Your preferences stay on this device. Rain and snow pause when the
             tab is hidden and stay still if you prefer reduced motion.
           </p>
-          <button className="text-button" onClick={() => save(defaults)}>
+          <Button
+            variant="link"
+            className="text-button"
+            onClick={() => save(defaults)}
+          >
             Reset atmosphere
-          </button>
+          </Button>
         </div>
-      </dialog>
-    </>
+      </DialogContent>
+    </Dialog>
   );
 }
 
 export default function Atmosphere() {
-  const { weather, intensity, daylight } = useSettings();
+  const { weather, intensity, daylight } = useAtmosphereSettings();
   useEffect(() => {
     document.documentElement.dataset.daylight = daylight;
   }, [daylight]);

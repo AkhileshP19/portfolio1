@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { AtmosphereControl, resetDaylight } from "./Atmosphere";
@@ -6,7 +7,8 @@ export default function ThemeToggle() {
   const { setTheme } = useTheme();
   return (
     <div className="theme-control">
-      <button
+      <Button
+        variant="ghost"
         className="icon-button light-choice"
         onClick={() => {
           resetDaylight();
@@ -16,8 +18,9 @@ export default function ThemeToggle() {
         title="Light theme"
       >
         <Sun size={19} aria-hidden="true" />
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="ghost"
         className="icon-button dark-choice"
         onClick={() => {
           resetDaylight();
@@ -27,7 +30,7 @@ export default function ThemeToggle() {
         title="Dark theme"
       >
         <Moon size={18} aria-hidden="true" />
-      </button>
+      </Button>
       <AtmosphereControl />
     </div>
   );

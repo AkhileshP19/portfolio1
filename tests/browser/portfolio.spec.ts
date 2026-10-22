@@ -45,7 +45,9 @@ test("theme persistence, keyboard preview selection and accessibility", async ({
   for (const theme of ["dark", "light"]) {
     await page.getByRole("button", { name: `Use ${theme} theme` }).click();
     await page.reload();
-    await expect(page.locator("html")).toHaveClass(theme);
+    await expect(page.locator("html")).toHaveClass(
+      new RegExp(`\\b${theme}\\b`),
+    );
     if (theme === "dark")
       await page.screenshot({ path: "artifacts/home-dark.png" });
     expect(
@@ -96,7 +98,7 @@ test("metadata, sitemap, project order and unknown routes", async ({
   expect((await request.get("/work/doctor-appointment")).status()).toBe(404);
   await page.goto("/projects");
   await expect(page.locator(".directory-project")).toHaveCount(5);
-  await expect(page.getByRole("link", { name: /Case study:/ })).toHaveCount(2);
+  await expect(page.getByRole("link", { name: /Case study/ })).toHaveCount(2);
 });
 test("weather preferences, intensity and daylight persist without blocking content", async ({
   page,
@@ -110,9 +112,14 @@ test("weather preferences, intensity and daylight persist without blocking conte
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
   await dialog.getByRole("button", { name: "Winter", exact: true }).click();
-  await dialog.getByLabel("Intensity").fill("65");
-  await dialog.getByLabel("Time of day").selectOption("night");
-  await expect(page.locator("html")).toHaveClass("dark");
+  const slider = dialog.getByRole("slider", { name: "Intensity" });
+  await slider.focus();
+  await slider.press("Home");
+  for (let i = 0; i < 13; i++) await slider.press("ArrowRight");
+  await dialog.getByRole("combobox", { name: "Time of day" }).click();
+  await page.getByRole("option", { name: "Night", exact: true }).click();
+  await expect(page.locator("html")).toHaveClass(/\bdark\b/);
+  await page.screenshot({ path: "artifacts/shadcn-atmosphere-desktop.png" });
   expect(
     (
       await new AxeBuilder({ page })
@@ -128,7 +135,9 @@ test("weather preferences, intensity and daylight persist without blocking conte
   await page
     .getByRole("button", { name: "Atmosphere settings", exact: true })
     .click();
-  await expect(dialog.getByLabel("Intensity")).toHaveValue("65");
+  await expect(dialog.getByRole("slider", { name: "Intensity" })).toHaveValue(
+    "65",
+  );
   await dialog.getByRole("button", { name: "Rain", exact: true }).click();
   await dialog.getByRole("button", { name: "Reset atmosphere" }).click();
   await expect(page.locator(".atmosphere-layer canvas")).toHaveCount(0);
@@ -147,6 +156,20 @@ test("mobile menu dismissal, focus, copy email and reduced motion", async ({
   await page.goto("/");
   const menu = page.getByRole("button", { name: "Open navigation" });
   await menu.click();
+  const atmosphere = page.getByRole("button", {
+    name: "Atmosphere settings",
+    exact: true,
+  });
+  await atmosphere.click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await page.getByRole("combobox", { name: "Time of day" }).click();
+  await page.getByRole("option", { name: "Evening", exact: true }).click();
+  await page.screenshot({ path: "artifacts/shadcn-atmosphere-mobile.png" });
+  await page.getByRole("button", { name: "Close atmosphere settings" }).click();
+  await expect(atmosphere).toBeFocused();
+  await expect(
+    page.getByRole("button", { name: "Close navigation" }),
+  ).toHaveAttribute("aria-expanded", "true");
   await page
     .getByRole("navigation")
     .getByRole("link", { name: "Work", exact: true })
@@ -166,6 +189,9 @@ test("mobile menu dismissal, focus, copy email and reduced motion", async ({
       () => getComputedStyle(document.documentElement).scrollBehavior,
     ),
   ).toBe("auto");
+  await page
+    .locator("#contact")
+    .screenshot({ path: "artifacts/shadcn-contact-mobile.png" });
   expect(
     (
       await new AxeBuilder({ page })
@@ -173,4 +199,56 @@ test("mobile menu dismissal, focus, copy email and reduced motion", async ({
         .analyze()
     ).violations,
   ).toEqual([]);
+});
+
+test("home scene follows every season and time, with responsive and reduced-motion layouts", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const scene = page.locator(".home-scene");
+  await expect(scene).toBeVisible();
+  for (const [label, weather] of [
+    ["Off", "none"],
+    ["Summer", "summer"],
+    ["Winter", "snow"],
+    ["Rain", "rain"],
+  ]) {
+    await page
+      .getByRole("button", { name: "Atmosphere settings", exact: true })
+      .click();
+    await page.getByRole("button", { name: label, exact: true }).click();
+    for (const time of ["Morning", "Afternoon", "Evening", "Night"]) {
+      await page.getByRole("combobox", { name: "Time of day" }).click();
+      await page.getByRole("option", { name: time, exact: true }).click();
+      await expect(scene).toHaveAttribute("data-weather", weather);
+      await expect(scene).toHaveAttribute("data-time", time.toLowerCase());
+      await expect(scene.locator(".scene-time-label")).toHaveText(
+        time.toLowerCase(),
+      );
+    }
+    await page
+      .getByRole("button", { name: "Close atmosphere settings" })
+      .click();
+    await scene.screenshot({ path: `artifacts/scene-${weather}-night.png` });
+  }
+  expect(
+    await scene
+      .locator(".scene-tree")
+      .first()
+      .evaluate((el) => getComputedStyle(el).animationName),
+  ).toBe("none");
+  await page.getByRole("button", { name: "Use light theme" }).click();
+  await expect(scene).toHaveAttribute("data-time", "afternoon");
+  await page.screenshot({ path: "artifacts/scene-desktop.png" });
+  await page.setViewportSize({ width: 768, height: 1000 });
+  await expect(scene).toBeVisible();
+  await page.screenshot({ path: "artifacts/scene-tablet.png" });
+  await page.setViewportSize({ width: 375, height: 812 });
+  await expect(scene).toBeHidden();
+  const heading = await page.locator("#hero-title").boundingBox();
+  const surname = await page.locator("#hero-title > span").boundingBox();
+  expect(heading?.x).toBe(surname?.x);
+  await page.screenshot({ path: "artifacts/scene-mobile.png" });
 });

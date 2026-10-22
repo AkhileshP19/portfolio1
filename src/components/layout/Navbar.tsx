@@ -1,10 +1,11 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import { navigation, profile, socialLinks } from "@/data/portfolio";
 import ThemeToggle from "@/components/ui/ThemeToggle";
-import { FolderOpen, X, FileText } from "lucide-react";
+import { TextAlignJustify, X, FileText } from "lucide-react";
 
 export default function Navbar({ hasResume }: { hasResume: boolean }) {
   const [open, setOpen] = useState(false);
@@ -23,6 +24,19 @@ export default function Navbar({ hasResume }: { hasResume: boolean }) {
         }
       }}
       onBlur={(event) => {
+        if (
+          event.currentTarget.querySelector(
+            '[aria-haspopup="dialog"][aria-expanded="true"]',
+          )
+        )
+          return;
+        if (
+          event.relatedTarget instanceof Element &&
+          event.relatedTarget.closest(
+            '[data-slot="dialog-content"], [data-slot="select-content"]',
+          )
+        )
+          return;
         if (!event.currentTarget.contains(event.relatedTarget)) close();
       }}
     >
@@ -31,7 +45,8 @@ export default function Navbar({ hasResume }: { hasResume: boolean }) {
           {profile.name}
           <span>{profile.role}</span>
         </Link>
-        <button
+        <Button
+          variant="ghost"
           ref={toggle}
           className="menu-toggle"
           aria-expanded={open}
@@ -42,9 +57,9 @@ export default function Navbar({ hasResume }: { hasResume: boolean }) {
           {open ? (
             <X size={23} aria-hidden="true" />
           ) : (
-            <FolderOpen size={23} aria-hidden="true" />
+            <TextAlignJustify size={23} aria-hidden="true" />
           )}
-        </button>
+        </Button>
         <nav
           id="main-navigation"
           aria-label="Main navigation"

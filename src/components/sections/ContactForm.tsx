@@ -1,4 +1,8 @@
 "use client";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -85,8 +89,8 @@ export default function ContactForm() {
       >
         <div className="form-fields">
           <div>
-            <label htmlFor="from-name">Your name</label>
-            <input
+            <Label htmlFor="from-name">Your name</Label>
+            <Input
               id="from-name"
               autoComplete="name"
               {...register("from_name")}
@@ -101,8 +105,8 @@ export default function ContactForm() {
             )}
           </div>
           <div>
-            <label htmlFor="reply-to">Email address</label>
-            <input
+            <Label htmlFor="reply-to">Email address</Label>
+            <Input
               id="reply-to"
               type="email"
               autoComplete="email"
@@ -119,8 +123,8 @@ export default function ContactForm() {
           </div>
         </div>
         <div className="message-field">
-          <label htmlFor="message">Your message</label>
-          <textarea
+          <Label htmlFor="message">Your message</Label>
+          <Textarea
             id="message"
             rows={5}
             {...register("message")}
@@ -135,8 +139,8 @@ export default function ContactForm() {
           )}
         </div>
         <div className="honeypot" aria-hidden="true">
-          <label htmlFor="website">Leave this empty</label>
-          <input
+          <Label htmlFor="website">Leave this empty</Label>
+          <Input
             id="website"
             tabIndex={-1}
             autoComplete="off"
@@ -144,14 +148,14 @@ export default function ContactForm() {
           />
         </div>
         <div className="form-submit">
-          <button className="button" disabled={isSubmitting} type="submit">
+          <Button className="button" disabled={isSubmitting} type="submit">
             {isSubmitting ? (
               <LoaderCircle className="spin" size={17} aria-hidden="true" />
             ) : (
               <Send size={17} aria-hidden="true" />
             )}
             {isSubmitting ? "Sending…" : "Send message"}
-          </button>
+          </Button>
           <p>Delivered directly to my inbox.</p>
         </div>
         <div className={`form-result ${result?.kind ?? ""}`} role="status">

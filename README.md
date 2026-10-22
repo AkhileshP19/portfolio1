@@ -49,7 +49,11 @@ The original public EmailJS browser identifiers are retained. Override them if n
 
 ## Optional atmosphere
 
-Icon controls open a native keyboard-accessible dialog. Summer adds a subtle sunlight tint; winter and rain use a pointer-transparent canvas with adjustable intensity. Morning, afternoon, evening and night presets change the palette. Effects are off by default, pause while the tab is hidden, and become static under reduced motion. Preferences stay on the device.
+Icon controls open a shadcn/Base UI dialog with managed focus and keyboard dismissal. A shadcn Slider controls intensity and Select controls time of day. Summer adds a subtle sunlight tint; winter and rain use a pointer-transparent canvas. Effects are off by default, pause while the tab is hidden, and become static under reduced motion. Preferences stay on the device.
+
+## UI component convention
+
+Use the installed shadcn Base UI components in `src/components/ui` for controls throughout the application. Buttons, CTA links, form fields, labels, dialogs, selects and sliders all share these primitives. Keep semantic HTML for document structure and ordinary navigation links. Theme tokens map shadcn surfaces to the portfolio palette; `--signal` and `--muted-text` hold editorial colors separately from shadcn's `--accent` and `--muted` surface tokens.
 
 ## Migration and performance notes
 
@@ -60,3 +64,10 @@ The redesign preserves Next.js, existing contact destinations and theme support.
 Server Components are the default. Client boundaries cover navigation, theme/atmosphere, contact form, preview selection, clipboard and a small tenure label. Tenure reserves width and refreshes every minute and on window focus. Fonts are self-hosted by `next/font` after build; a fresh build needs network access to fetch Google Fonts.
 
 Local Lighthouse scores are lab measurements, not deployed Core Web Vitals. INP needs real interactions/field data. Recheck the Vercel deployment after publishing.
+
+The home-page outline landscape shares the atmosphere settings: four sky states
+combine with calm, summer, winter, or rain. The SVG keeps its house in place while
+seasonal layers crossfade and the sun moves across the sky. Manual light/dark mode
+uses afternoon/night respectively. The scene appears from 640px upward; smaller
+screens keep a left-aligned name without the decorative landscape. Reduced-motion
+preferences disable both scene animation and transitions.

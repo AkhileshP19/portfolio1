@@ -3,7 +3,9 @@ import { beforeEach, expect, it, vi } from "vitest";
 import ContactForm from "./ContactForm";
 const { send } = vi.hoisted(() => ({ send: vi.fn() }));
 vi.mock("@emailjs/browser", () => ({ default: { send } }));
-beforeEach(() => { send.mockReset(); });
+beforeEach(() => {
+  send.mockReset();
+});
 function fill() {
   fireEvent.change(screen.getByLabelText("Your name"), {
     target: { value: "Test Person" },

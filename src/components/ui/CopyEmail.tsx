@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { profile } from "@/data/portfolio";
 import { Copy } from "lucide-react";
@@ -14,9 +15,9 @@ export default function CopyEmail() {
   }
   return (
     <div className="copy-control">
-      <button onClick={copy}>
+      <Button variant="ghost" className="min-h-11" onClick={copy}>
         <Copy size={15} aria-hidden="true" /> Copy email
-      </button>
+      </Button>
       <span role="status">{status}</span>
     </div>
   );

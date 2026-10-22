@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
@@ -84,9 +85,13 @@ export default function ProjectsPage() {
       </div>
       <div className="directory-contact">
         <h2>Have a project in mind?</h2>
-        <Link className="button" href="/#contact">
+        <Button
+          className="button"
+          nativeButton={false}
+          render={<Link href="/#contact" />}
+        >
           Let’s talk
-        </Link>
+        </Button>
       </div>
     </main>
   );
