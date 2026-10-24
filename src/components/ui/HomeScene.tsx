@@ -1,16 +1,26 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import type { CSSProperties } from "react";
+import { useSyncExternalStore, type CSSProperties } from "react";
 import { useAtmosphereSettings } from "@/components/ui/Atmosphere";
+
+const subscribeToHydration = () => () => {};
+const clientSnapshot = () => true;
+const serverSnapshot = () => false;
 
 // All layers remain mounted so a change of season dissolves into the next.
 export default function HomeScene() {
   const { weather, daylight, intensity } = useAtmosphereSettings();
   const { resolvedTheme } = useTheme();
+  // Match the server during hydration before reading the browser's saved theme.
+  const hydrated = useSyncExternalStore(
+    subscribeToHydration,
+    clientSnapshot,
+    serverSnapshot,
+  );
   const time =
     daylight === "manual"
-      ? resolvedTheme === "dark"
+      ? hydrated && resolvedTheme === "dark"
         ? "night"
         : "afternoon"
       : daylight;

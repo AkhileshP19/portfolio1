@@ -33,6 +33,15 @@ for (const width of [320, 375, 430, 768, 1024, 1440]) {
 test("theme persistence, keyboard preview selection and accessibility", async ({
   page,
 }) => {
+  const hydrationErrors: string[] = [];
+  page.on("pageerror", (error) => hydrationErrors.push(error.message));
+  page.on("console", (message) => {
+    if (
+      message.type() === "error" &&
+      /hydration|server rendered|#418/i.test(message.text())
+    )
+      hydrationErrors.push(message.text());
+  });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/");
   await page
@@ -47,6 +56,10 @@ test("theme persistence, keyboard preview selection and accessibility", async ({
     await page.reload();
     await expect(page.locator("html")).toHaveClass(
       new RegExp(`\\b${theme}\\b`),
+    );
+    await expect(page.locator(".home-scene")).toHaveAttribute(
+      "data-time",
+      theme === "dark" ? "night" : "afternoon",
     );
     if (theme === "dark")
       await page.screenshot({ path: "artifacts/home-dark.png" });
@@ -68,6 +81,7 @@ test("theme persistence, keyboard preview selection and accessibility", async ({
       ).violations,
     ).toEqual([]);
   }
+  expect(hydrationErrors).toEqual([]);
 });
 test("metadata, sitemap, project order and unknown routes", async ({
   page,

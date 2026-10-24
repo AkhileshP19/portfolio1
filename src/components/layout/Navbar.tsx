@@ -68,10 +68,12 @@ export default function Navbar({ hasResume }: { hasResume: boolean }) {
           {navigation.map((item) => (
             <Link
               key={item.id}
-              href={`/#${item.id}`}
+              href={item.id === "projects" ? "/projects" : `/#${item.id}`}
               onClick={close}
               aria-current={
-                item.id === "work" && pathname.startsWith("/work/")
+                item.id === "projects" && pathname === "/projects"
+                  ? "page"
+                  : item.id === "work" && pathname.startsWith("/work/")
                   ? "location"
                   : undefined
               }
@@ -79,13 +81,6 @@ export default function Navbar({ hasResume }: { hasResume: boolean }) {
               {item.label}
             </Link>
           ))}
-          <Link
-            href="/projects"
-            onClick={close}
-            aria-current={pathname === "/projects" ? "page" : undefined}
-          >
-            Projects
-          </Link>
           <div className="nav-social">
             {socialLinks.slice(0, 2).map((link) => (
               <a

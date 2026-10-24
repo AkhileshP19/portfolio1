@@ -20,6 +20,7 @@ export const socialLinks = [
 export const navigation = [
   { label: "Work", id: "work" },
   { label: "Experience", id: "experience" },
+  { label: "Projects", id: "projects" },
   { label: "Stack", id: "stack" },
   { label: "About", id: "about" },
   { label: "Contact", id: "contact" },
